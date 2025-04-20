@@ -8,8 +8,12 @@ def main():
   clock = pygame.time.Clock()
   x = SCREEN_WIDTH / 2
   y = SCREEN_HEIGHT / 2
-  player = Player(x, y)
+  updatable = pygame.sprite.Group()
+  drawable = pygame.sprite.Group()
   dt = 0
+
+  Player.containers = (updatable, drawable)
+  player = Player(x, y)
 
   while(True):
     for event in pygame.event.get():
@@ -18,14 +22,16 @@ def main():
     
     # limit FPS to 60
     delta = clock.tick(60)
-    dt = delta/1000
+    dt = delta/1000 
 
-    player.update(dt)
+    # updating the sprites
+    updatable.update(dt)
 
     screen.fill("black")
     
     # adding player to screen
-    player.draw(screen)
+    for item in drawable:
+      item.draw(screen)
     
     # update the screen
     pygame.display.flip()
